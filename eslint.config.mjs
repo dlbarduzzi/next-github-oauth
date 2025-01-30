@@ -15,6 +15,7 @@ const eslintConfig = [
       "next/core-web-vitals",
       "next/typescript",
       "prettier",
+      "plugin:n/recommended",
       "plugin:tailwindcss/recommended",
     ],
     plugins: ["tailwindcss"],
@@ -25,6 +26,9 @@ const eslintConfig = [
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-expressions": "error",
+      "n/no-missing-import": "off",
+      "n/no-extraneous-import": "off",
+      "n/no-process-env": "error",
     },
   }),
 ]
