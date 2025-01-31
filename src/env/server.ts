@@ -9,16 +9,15 @@ export const env = createEnv({
   },
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
     console.error("❌ Invalid server environment variables ❌", issues)
-    // It's ok to disable lint below because
-    // we do want to exit in case of an error.
     // eslint-disable-next-line n/no-process-exit
     process.exit(1)
   },
-  /* eslint-disable n/no-process-env */
   runtimeEnv: {
+    /* eslint-disable n/no-process-env */
     NODE_ENV: process.env.NODE_ENV,
+    /* eslint-enable n/no-process-env */
   },
   emptyStringAsUndefined: true,
+  /* eslint-disable-next-line n/no-process-env */
   skipValidation: process.env.SKIP_ENV_VALIDATIONS === "true",
-  /* eslint-enable n/no-process-env */
 })

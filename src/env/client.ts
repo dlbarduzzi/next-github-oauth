@@ -9,8 +9,6 @@ export const env = createEnv({
   },
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
     console.error("❌ Invalid client environment variables ❌", issues)
-    // It's ok to disable lint below because
-    // we do want to exit in case of an error.
     // eslint-disable-next-line n/no-process-exit
     process.exit(1)
   },
