@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils"
 import { fontSans } from "@/lib/fonts"
 import { siteConfig } from "@/lib/site"
 
+import { ScreenSize } from "@/components/screen-size"
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -43,6 +45,7 @@ export default function RootLayout({
         )}
       >
         {children}
+        <ScreenSize />
       </body>
     </html>
   )
