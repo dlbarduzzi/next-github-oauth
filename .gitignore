@@ -39,4 +39,5 @@ next-env.d.ts
 
 # CUSTOM
 .env
-.local
+.local/
+docker-data/
