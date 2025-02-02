@@ -32,7 +32,27 @@ TBD
 npm run dev
 ```
 
-## Database helpers
+## Database scripts
+
+- Generate table changes.
+
+```sh
+npm run db:generate
+```
+
+- Apply table changes/migration.
+
+```sh
+npm run db:migrate
+```
+
+- Open database in the browser.
+
+```sh
+npm run db:studio
+```
+
+## Database CLI helpers
 
 - Connect to docker database.
 

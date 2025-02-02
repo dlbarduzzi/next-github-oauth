@@ -12,6 +12,11 @@ export const env = createEnv({
     DB_PASS: z.string(),
     DB_PORT: z.coerce.number(),
     DATABASE_URL: z.string().url(),
+    DB_MIGRATING: z
+      .string()
+      .refine(s => s === "true" || s === "false")
+      .transform(s => s === "true")
+      .optional(),
   },
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
     console.error("❌ Invalid server environment variables ❌", issues)
@@ -27,6 +32,7 @@ export const env = createEnv({
     DB_USER: process.env.DB_USER,
     DB_PASS: process.env.DB_PASS,
     DATABASE_URL: process.env.DATABASE_URL,
+    DB_MIGRATING: process.env.DB_MIGRATING,
     /* eslint-enable n/no-process-env */
   },
   emptyStringAsUndefined: true,
