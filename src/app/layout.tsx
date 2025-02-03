@@ -7,6 +7,7 @@ import { fontSans } from "@/lib/fonts"
 import { siteConfig } from "@/lib/site"
 
 import { ScreenSize } from "@/components/screen-size"
+import { QueryProvider } from "@/providers/react-query"
 
 export const metadata: Metadata = {
   title: {
@@ -44,7 +45,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        {children}
+        <QueryProvider>{children}</QueryProvider>
         <ScreenSize />
       </body>
     </html>
