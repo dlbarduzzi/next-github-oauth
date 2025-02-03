@@ -12,6 +12,21 @@ export default {
     fontFamily: {
       sans: ["var(--font-rubik-sans)", ...fontFamily.sans],
     },
+    extend: {
+      keyframes: {
+        "loading-dots": {
+          "0%, 80%, 100%": {
+            opacity: "0",
+          },
+          "40%": {
+            opacity: "1",
+          },
+        },
+      },
+      animation: {
+        "loading-dots": "loading-dots 1.4s ease-in-out infinite",
+      },
+    },
   },
   plugins: [tailwindcssForms, tailwindcssAnimate],
 } satisfies Config
