@@ -37,13 +37,13 @@ npm run dev
 - Generate table changes.
 
 ```sh
-npm run db:generate
+npx drizzle-kit generate --name=init
 ```
 
 - Apply table changes/migration.
 
 ```sh
-npm run db:migrate
+npx drizzle-kit migrate
 ```
 
 - Open database in the browser.
