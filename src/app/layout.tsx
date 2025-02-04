@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from "next"
 import "@/styles/globals.css"
 
 import { cn } from "@/lib/utils"
-import { fontSans } from "@/lib/fonts"
 import { siteConfig } from "@/lib/site"
+import { fontGeistSans, fontGeistMono } from "@/lib/fonts"
 
 import { ScreenSize } from "@/components/screen-size"
 import { QueryProvider } from "@/providers/react-query"
@@ -42,7 +42,8 @@ export default function RootLayout({
         className={cn(
           "min-h-screen bg-white font-sans text-base text-black antialiased",
           "selection:bg-yellow-200 selection:text-black",
-          fontSans.variable
+          fontGeistSans.variable,
+          fontGeistMono.variable
         )}
       >
         <QueryProvider>{children}</QueryProvider>

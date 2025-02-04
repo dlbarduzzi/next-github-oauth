@@ -10,7 +10,8 @@ export default {
   darkMode: "class",
   theme: {
     fontFamily: {
-      sans: ["var(--font-rubik-sans)", ...fontFamily.sans],
+      sans: ["var(--font-geist-sans)", ...fontFamily.sans],
+      mono: ["var(--font-geist-mono)", ...fontFamily.mono],
     },
     extend: {
       keyframes: {

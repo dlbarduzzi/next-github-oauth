@@ -1,17 +1,23 @@
 import localFont from "next/font/local"
 
-export const fontSans = localFont({
+export const fontGeistSans = localFont({
   src: [
     {
-      path: "../fonts/Rubik.ttf",
+      path: "../fonts/Geist.ttf",
       style: "normal",
       weight: "100 900",
     },
+  ],
+  variable: "--font-geist-sans",
+})
+
+export const fontGeistMono = localFont({
+  src: [
     {
-      path: "../fonts/RubikItalic.ttf",
-      style: "italic",
+      path: "../fonts/GeistMono.ttf",
+      style: "normal",
       weight: "100 900",
     },
   ],
-  variable: "--font-rubik-sans",
+  variable: "--font-geist-mono",
 })
