@@ -5,19 +5,21 @@ export default function Page() {
     <div className="bg-white">
       <div className="space-y-4 p-4">
         <div>Page content.</div>
-        <div
+        <ul
+          role="list"
           className={cn(
-            "grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3",
+            "grid grid-cols-1 gap-5 gap-x-4 md:grid-cols-2 lg:grid-cols-3",
             "xl:grid-cols-4 2xl:grid-cols-5"
           )}
         >
-          {Array.from({ length: 12 }).map((_, index) => (
-            <div
-              key={index}
-              className="h-44 w-full rounded-md border border-gray-200 bg-gray-100"
-            />
+          {Array.from({ length: 13 }).map((_, index) => (
+            <li key={index} className="relative">
+              <div className="rounded-lg bg-gray-100">
+                <div className="aspect-[10/7]" />
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   )

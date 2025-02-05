@@ -3,38 +3,46 @@ import type { ReactNode } from "react"
 
 function Sidebar() {
   return (
-    <div className="fixed inset-y-0 z-40 flex w-72 flex-col bg-white">
+    <div
+      className={cn(
+        "hidden bg-white sm:fixed sm:inset-y-0 sm:z-40 sm:flex",
+        "sm:w-20 sm:flex-col lg:w-72"
+      )}
+    >
       <div
         className={cn(
-          "flex flex-1 flex-col gap-y-4 overflow-y-auto",
+          "flex flex-1 flex-col gap-y-4 overflow-hidden",
           "border-r border-r-gray-200 px-4 pt-16"
         )}
       >
         <nav className="flex h-full flex-col gap-y-4 pt-4">
           <div className="flex flex-1 flex-col gap-y-4">
             {Array.from({ length: 5 }).map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                className={cn(
-                  "flex h-11 w-full items-center rounded-md bg-gray-200",
-                  "px-4 py-2 text-sm transition-colors hover:bg-gray-300"
-                )}
-              >
-                button {index + 1}
-              </button>
+              <div key={index} className="lg:flex lg:items-center lg:gap-x-3">
+                <button
+                  type="button"
+                  className={cn(
+                    "flex h-11 w-[2.95rem] items-center justify-center rounded-md",
+                    "bg-gray-200 px-4 py-2 text-sm transition-colors hover:bg-gray-300"
+                  )}
+                >
+                  S
+                </button>
+                <span className="hidden lg:inline">Settings</span>
+              </div>
             ))}
           </div>
-          <div className="pb-4">
+          <div className="pb-4 lg:flex lg:items-center lg:gap-x-3">
             <button
               type="button"
               className={cn(
-                "flex h-11 w-full items-center rounded-md bg-gray-200",
-                "px-4 py-2 text-sm transition-colors hover:bg-gray-300"
+                "flex h-11 w-[2.95rem] items-center justify-center rounded-md",
+                "bg-gray-200 px-4 py-2 text-sm transition-colors hover:bg-gray-300"
               )}
             >
-              bottom
+              B
             </button>
+            <span className="hidden lg:inline">Profile</span>
           </div>
         </nav>
       </div>
@@ -55,7 +63,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="border-t border-t-gray-200 bg-white pl-72">
+    <footer className="border-t border-t-gray-200 bg-white sm:pl-20 lg:pl-72">
       <div className="p-4">Footer</div>
     </footer>
   )
@@ -66,7 +74,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <Sidebar />
       <Header />
-      <main className="grid flex-1 pl-72 pt-16">{children}</main>
+      <main className="grid flex-1 pt-16 sm:pl-20 lg:pl-72">{children}</main>
       <Footer />
     </div>
   )
