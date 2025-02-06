@@ -8,6 +8,7 @@ import { SiteLogo } from "@/components/site-logo"
 
 import { cn } from "@/lib/utils"
 import { siteConfig } from "@/lib/site"
+import { Button } from "@/components/ui/button"
 
 const sidebarNav = [
   {
@@ -55,7 +56,7 @@ function Sidebar() {
                   className={cn(
                     "group flex h-11 w-[2.95rem] items-center justify-center",
                     "rounded-md bg-transparent text-sm transition-colors",
-                    "hover:bg-gray-200"
+                    "hover:bg-gray-200 lg:bg-gray-100"
                   )}
                 >
                   <item.icon
@@ -72,12 +73,12 @@ function Sidebar() {
               className={cn(
                 "group flex h-11 w-[2.95rem] items-center justify-center",
                 "rounded-md bg-transparent text-sm transition-colors",
-                "hover:bg-gray-200"
+                "hover:bg-gray-200 lg:bg-gray-100"
               )}
             >
               <Settings className="size-5 text-gray-600 group-hover:text-gray-800" />
             </button>
-            <span className="hidden lg:inline">Profile</span>
+            <span className="hidden lg:inline">Settings</span>
           </div>
         </nav>
       </div>
@@ -101,7 +102,10 @@ function Header() {
             <span className="sr-only">Link to home page.</span>
           </Link>
         </div>
-        <div className="flex items-center">User</div>
+        <div className="flex items-center gap-x-3">
+          <Button type="button">Sign in</Button>
+          <Button type="button">Theme</Button>
+        </div>
       </div>
     </header>
   )
