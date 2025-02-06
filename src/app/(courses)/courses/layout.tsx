@@ -1,8 +1,13 @@
 import type { ReactNode } from "react"
 
+import Link from "next/link"
+
 import { Calendar, ChartPie, FileText, FolderOpen, House, Settings } from "lucide-react"
 
+import { SiteLogo } from "@/components/site-logo"
+
 import { cn } from "@/lib/utils"
+import { siteConfig } from "@/lib/site"
 
 const sidebarNav = [
   {
@@ -84,7 +89,18 @@ function Header() {
   return (
     <header className="fixed z-50 h-16 w-full border-b border-b-gray-200 bg-white">
       <div className="flex h-full items-center justify-between gap-x-4 px-4">
-        <div className="flex items-center">Logo</div>
+        <div className="flex items-center">
+          <Link
+            href="/"
+            className={cn(
+              "rounded-full focus-visible:outline-none focus-visible:ring-2",
+              "focus-visible:ring-black focus-visible:ring-offset-2"
+            )}
+          >
+            <SiteLogo />
+            <span className="sr-only">Link to home page.</span>
+          </Link>
+        </div>
         <div className="flex items-center">User</div>
       </div>
     </header>
@@ -94,7 +110,11 @@ function Header() {
 function Footer() {
   return (
     <footer className="border-t border-t-gray-200 bg-white sm:pl-20 lg:pl-64">
-      <div className="p-4">Footer</div>
+      <div className="p-4 text-center">
+        <p className="text-sm text-gray-500">
+          &copy; {new Date().getFullYear()} {siteConfig.name} - All rights reserved.
+        </p>
+      </div>
     </footer>
   )
 }
