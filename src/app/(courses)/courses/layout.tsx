@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import { Calendar, ChartPie, FileText, FolderOpen, House, Settings } from "lucide-react"
 
-import { SiteLogo } from "@/components/site-logo"
+import { SiteLogo, SiteLogoFull } from "@/components/site-logo"
 
 import { cn } from "@/lib/utils"
 import { siteConfig } from "@/lib/site"
@@ -94,11 +94,13 @@ function Header() {
           <Link
             href="/"
             className={cn(
-              "rounded-full focus-visible:outline-none focus-visible:ring-2",
-              "focus-visible:ring-black focus-visible:ring-offset-2"
+              "inline-flex items-center gap-x-3 rounded-full",
+              "focus-visible:outline-none focus-visible:ring-2",
+              "focus-visible:ring-black focus-visible:ring-offset-2 md:rounded-none"
             )}
           >
-            <SiteLogo />
+            <SiteLogo className="md:hidden" />
+            <SiteLogoFull className="hidden md:inline" />
             <span className="sr-only">Link to home page.</span>
           </Link>
         </div>
