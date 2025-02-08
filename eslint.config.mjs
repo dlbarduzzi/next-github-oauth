@@ -29,6 +29,7 @@ const eslintConfig = [
       "n/no-missing-import": "off",
       "n/no-extraneous-import": "off",
       "n/no-process-env": "error",
+      "n/no-unsupported-features/node-builtins": "off",
     },
   }),
 ]

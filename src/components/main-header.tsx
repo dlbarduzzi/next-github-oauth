@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import { Button } from "@/components/ui/button"
 import { SiteLogo } from "@/components/site-logo"
 import { Container } from "@/components/container"
 
@@ -22,7 +23,11 @@ export function MainHeader() {
               <span className="sr-only">Link to home page.</span>
             </Link>
           </div>
-          <div>User</div>
+          <div className="flex items-center">
+            <Button asChild>
+              <Link href="/login">Sign in</Link>
+            </Button>
+          </div>
         </div>
       </Container>
     </header>
