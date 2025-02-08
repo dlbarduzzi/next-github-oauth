@@ -1,10 +1,9 @@
-import { InferSelectModel } from "drizzle-orm"
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm"
+
 import { text, pgTable, timestamp, uuid, pgEnum } from "drizzle-orm/pg-core"
 
 export const courseStatuses = ["draft", "published"] as const
 export const courseStatusEnum = pgEnum("course_status", courseStatuses)
-
-export type CourseStatus = (typeof courseStatuses)[number]
 
 export const courses = pgTable("courses", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -21,3 +20,6 @@ export const courses = pgTable("courses", {
 })
 
 export type CourseSchema = InferSelectModel<typeof courses>
+export type CreateCourseSchema = InferInsertModel<typeof courses>
+
+export type CourseStatus = (typeof courseStatuses)[number]
