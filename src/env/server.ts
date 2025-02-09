@@ -6,6 +6,8 @@ import { createEnv } from "@t3-oss/env-nextjs"
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "production"]),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
     DB_HOST: z.string(),
     DB_NAME: z.string(),
     DB_USER: z.string(),
@@ -26,6 +28,8 @@ export const env = createEnv({
   runtimeEnv: {
     /* eslint-disable n/no-process-env */
     NODE_ENV: process.env.NODE_ENV,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     DB_HOST: process.env.DB_HOST,
     DB_PORT: process.env.DB_PORT,
     DB_NAME: process.env.DB_NAME,
