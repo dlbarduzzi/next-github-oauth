@@ -1,6 +1,7 @@
-import type { InferInsertModel, InferSelectModel } from "drizzle-orm"
-
 import { uuid, pgTable, text, pgEnum } from "drizzle-orm/pg-core"
+
+import { z } from "zod"
+import { createSelectSchema } from "drizzle-zod"
 
 import { users } from "./users"
 
@@ -15,7 +16,6 @@ export const accounts = pgTable("accounts", {
   providerAccountId: text("provider_account_id").notNull().unique(),
 })
 
-export type AccountSchema = InferSelectModel<typeof accounts>
-export type CreateAccountSchema = InferInsertModel<typeof accounts>
-
+export const accountSchema = createSelectSchema(accounts)
+export type AccountSchema = z.infer<typeof accountSchema>
 export type AccountProvider = (typeof accountProviders)[number]

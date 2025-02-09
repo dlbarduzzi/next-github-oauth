@@ -1,5 +1,3 @@
-import type { InferInsertModel, InferSelectModel } from "drizzle-orm"
-
 import {
   pgTable,
   text,
@@ -10,6 +8,9 @@ import {
 } from "drizzle-orm/pg-core"
 
 import { lower } from "@/db/helpers"
+
+import { z } from "zod"
+import { createSelectSchema } from "drizzle-zod"
 
 export const users = pgTable(
   "users",
@@ -30,5 +31,5 @@ export const users = pgTable(
   table => [uniqueIndex("email_index").on(lower(table.email))]
 )
 
-export type UserSchema = InferSelectModel<typeof users>
-export type CreateUserSchema = InferInsertModel<typeof users>
+export const userSchema = createSelectSchema(users)
+export type UserSchema = z.infer<typeof userSchema>

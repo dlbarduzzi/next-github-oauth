@@ -1,6 +1,7 @@
-import type { InferInsertModel, InferSelectModel } from "drizzle-orm"
-
 import { text, pgTable, timestamp, uuid, pgEnum } from "drizzle-orm/pg-core"
+
+import { z } from "zod"
+import { createSelectSchema } from "drizzle-zod"
 
 export const courseStatuses = ["draft", "published"] as const
 export const courseStatusEnum = pgEnum("course_status", courseStatuses)
@@ -19,7 +20,6 @@ export const courses = pgTable("courses", {
     .$onUpdate(() => new Date()),
 })
 
-export type CourseSchema = InferSelectModel<typeof courses>
-export type CreateCourseSchema = InferInsertModel<typeof courses>
-
+export const courseSchema = createSelectSchema(courses)
+export type CourseSchema = z.infer<typeof courseSchema>
 export type CourseStatus = (typeof courseStatuses)[number]

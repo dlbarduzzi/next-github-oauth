@@ -1,16 +1,22 @@
 "use server"
 
-import type { CourseSchema } from "@/db/schema"
-import type { DatabaseSuccess, DatabaseFailure } from "@/lib/types"
+import type { CourseSchema } from "@/db/schemas/courses"
 
 import { db } from "@/db/conn"
 import { courses } from "@/db/schemas/courses"
 import { desc, eq } from "drizzle-orm"
 
-type Success = DatabaseSuccess<CourseSchema[]>
-type Failure = DatabaseFailure
+type GetCoursesResponse =
+  | {
+      ok: false
+      error: string
+    }
+  | {
+      ok: true
+      data: CourseSchema[]
+    }
 
-export async function getCourses(): Promise<Success | Failure> {
+export async function getCourses(): Promise<GetCoursesResponse> {
   try {
     const data = await db.query.courses.findMany({
       where: eq(courses.status, "published"),
