@@ -7,6 +7,8 @@ import postgres from "postgres"
 import { db } from "@/db/conn"
 import { createUserSchema, users } from "@/db/schemas/users"
 
+import { getCurrentSession, invalidateSession, deleteCookie } from "./sessions"
+
 type CreateUser = { ok: false } | { ok: true; data: UserSchema | null }
 
 export async function createUser(user: CreateUserSchema): Promise<CreateUser> {
@@ -34,4 +36,22 @@ export async function createUser(user: CreateUserSchema): Promise<CreateUser> {
     }
     return { ok: false }
   }
+}
+
+type Logout = { ok: false; error: string } | { ok: true }
+
+export async function logout(): Promise<Logout> {
+  const session = await getCurrentSession()
+  if (!session.ok) {
+    return { ok: false, error: "Unauthorized" }
+  }
+
+  if (!session.isAuthenticated) {
+    return { ok: false, error: "Unauthorized" }
+  }
+
+  await invalidateSession(session.session.id)
+  await deleteCookie()
+
+  return { ok: true }
 }
