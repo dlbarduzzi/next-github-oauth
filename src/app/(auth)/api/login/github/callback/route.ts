@@ -37,8 +37,11 @@ export async function GET(request: Request) {
   }
 
   if (account.data !== null) {
-    // TODO: Create session and cookie tokens!
-    console.log("User exists!")
+    const cookieAndSession = await createCookieAndSessionTokens(account.data.userId)
+    if (!cookieAndSession.ok) {
+      return new Response(cookieAndSession.error, { status: cookieAndSession.code })
+    }
+    return new Response(null, { status: 302, headers: { Location: "/" } })
   }
 
   const githubUserEmail = await getGithubUserEmail(token.data)
