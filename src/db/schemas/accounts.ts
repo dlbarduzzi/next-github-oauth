@@ -1,7 +1,7 @@
 import { uuid, pgTable, text, pgEnum } from "drizzle-orm/pg-core"
 
 import { z } from "zod"
-import { createSelectSchema } from "drizzle-zod"
+import { createSelectSchema, createInsertSchema } from "drizzle-zod"
 
 import { users } from "./users"
 
@@ -17,5 +17,9 @@ export const accounts = pgTable("accounts", {
 })
 
 export const accountSchema = createSelectSchema(accounts)
+export const createAccountSchema = createInsertSchema(accounts)
+
 export type AccountSchema = z.infer<typeof accountSchema>
+export type CreateAccountSchema = z.infer<typeof createAccountSchema>
+
 export type AccountProvider = (typeof accountProviders)[number]

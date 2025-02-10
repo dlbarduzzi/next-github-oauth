@@ -10,7 +10,7 @@ import {
 import { lower } from "@/db/helpers"
 
 import { z } from "zod"
-import { createSelectSchema } from "drizzle-zod"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod"
 
 export const users = pgTable(
   "users",
@@ -32,4 +32,12 @@ export const users = pgTable(
 )
 
 export const userSchema = createSelectSchema(users)
+
+export const createUserSchema = createInsertSchema(users, {
+  name: z.string(),
+  email: z.string().email("Invalid email."),
+  imageUrl: z.string(),
+}).omit({ id: true, createdAt: true, updatedAt: true, deletedAt: true })
+
 export type UserSchema = z.infer<typeof userSchema>
+export type CreateUserSchema = z.infer<typeof createUserSchema>

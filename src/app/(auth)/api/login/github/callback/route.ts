@@ -3,8 +3,9 @@ import { cookies } from "next/headers"
 import { ArcticFetchError, OAuth2RequestError } from "arctic"
 
 import { github } from "@/features/auth/providers"
-import { findUserByAccount } from "@/features/auth/actions/accounts"
+import { createUser } from "@/features/auth/actions/users"
 import { GITHUB_STATE_COOKIE_NAME } from "@/features/auth/constants"
+import { createAccount, findUserByAccount } from "@/features/auth/actions/accounts"
 
 export async function GET(request: Request) {
   const code = await getCodeParam(request)
@@ -49,8 +50,29 @@ export async function GET(request: Request) {
     })
   }
 
-  console.log({ githubUser })
-  console.log({ githubUserEmail })
+  const newUser = await createUser({
+    name: githubUser.data.name,
+    email: githubUserEmail.data,
+    imageUrl: githubUser.data.imageUrl,
+  })
+
+  if (!newUser.ok || newUser.data === null) {
+    return new Response("Internal server error. Please restart the process.", {
+      status: 500,
+    })
+  }
+
+  const newAccount = await createAccount({
+    userId: newUser.data.id,
+    provider: "github",
+    providerAccountId: githubUser.data.id,
+  })
+
+  if (!newAccount.ok || newAccount.data === null) {
+    return new Response("Internal server error. Please restart the process.", {
+      status: 500,
+    })
+  }
 
   return new Response("Github Callback!", {
     status: 200,
