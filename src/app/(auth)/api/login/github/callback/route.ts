@@ -1,11 +1,13 @@
 import { z } from "zod"
 import { cookies } from "next/headers"
 import { ArcticFetchError, OAuth2RequestError } from "arctic"
+import { encodeBase32LowerCaseNoPadding } from "@oslojs/encoding"
 
 import { github } from "@/features/auth/providers"
 import { createUser } from "@/features/auth/actions/users"
 import { GITHUB_STATE_COOKIE_NAME } from "@/features/auth/constants"
 import { createAccount, findUserByAccount } from "@/features/auth/actions/accounts"
+import { createSession, createCookie } from "@/features/auth/actions/sessions"
 
 export async function GET(request: Request) {
   const code = await getCodeParam(request)
@@ -74,9 +76,12 @@ export async function GET(request: Request) {
     })
   }
 
-  return new Response("Github Callback!", {
-    status: 200,
-  })
+  const cookieAndSession = await createCookieAndSessionTokens(newUser.data.id)
+  if (!cookieAndSession.ok) {
+    return new Response(cookieAndSession.error, { status: cookieAndSession.code })
+  }
+
+  return new Response(null, { status: 302, headers: { Location: "/" } })
 }
 
 type CallbackResponse<T> =
@@ -249,4 +254,39 @@ async function getGithubUserEmail(
       error: "Internal server error. Please restart the process.",
     }
   }
+}
+
+async function createCookieAndSessionTokens(
+  userId: string
+): Promise<CallbackResponse<null>> {
+  try {
+    const token = generateSessionToken()
+    const session = await createSession({ token, userId })
+
+    if (!session.ok || session.data === null) {
+      return {
+        ok: false,
+        code: 500,
+        error: "Internal server error. Please restart the process.",
+      }
+    }
+
+    await createCookie(token, session.data.expiresAt)
+
+    return { ok: true, data: null }
+  } catch (error) {
+    console.error(`ERROR - CreateCookieAndSessionTokensException - ${error}`)
+    return {
+      ok: false,
+      code: 500,
+      error: "Internal server error. Please restart the process.",
+    }
+  }
+}
+
+function generateSessionToken() {
+  const bytes = new Uint8Array(20)
+  crypto.getRandomValues(bytes)
+  const token = encodeBase32LowerCaseNoPadding(bytes)
+  return token
 }
