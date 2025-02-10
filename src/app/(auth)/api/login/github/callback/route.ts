@@ -3,6 +3,7 @@ import { cookies } from "next/headers"
 import { ArcticFetchError, OAuth2RequestError } from "arctic"
 
 import { github } from "@/features/auth/providers"
+import { findUserByAccount } from "@/features/auth/actions/accounts"
 import { GITHUB_STATE_COOKIE_NAME } from "@/features/auth/constants"
 
 export async function GET(request: Request) {
@@ -21,21 +22,44 @@ export async function GET(request: Request) {
     return new Response(githubUser.error, { status: githubUser.code })
   }
 
+  const account = await findUserByAccount({
+    provider: "github",
+    providerAccountId: githubUser.data.id,
+  })
+
+  if (!account.ok) {
+    return new Response("Internal server error. Please restart the process.", {
+      status: 500,
+    })
+  }
+
+  if (account.data !== null) {
+    // TODO: Create session and cookie tokens!
+    console.log("User exists!")
+  }
+
+  const githubUserEmail = await getGithubUserEmail(token.data)
+  if (!githubUserEmail.ok) {
+    return new Response(githubUserEmail.error, { status: githubUserEmail.code })
+  }
+
+  if (githubUserEmail.data === null) {
+    return new Response("You must validate your GitHub email before proceeding.", {
+      status: 400,
+    })
+  }
+
+  console.log({ githubUser })
+  console.log({ githubUserEmail })
+
   return new Response("Github Callback!", {
     status: 200,
   })
 }
 
 type CallbackResponse<T> =
-  | {
-      ok: true
-      data: T
-    }
-  | {
-      ok: false
-      code: number
-      error: string
-    }
+  | { ok: true; data: T }
+  | { ok: false; code: number; error: string }
 
 async function getCodeParam(request: Request): Promise<CallbackResponse<string>> {
   const url = new URL(request.url)
@@ -125,7 +149,7 @@ async function getGithubUser(
     const data = githubUserSchema.safeParse(json)
     if (!data.success) {
       const flattenErr = JSON.stringify(data.error.flatten().fieldErrors)
-      console.error(`ERROR - github SafeParse - ${flattenErr}`)
+      console.error(`ERROR - github SafeParseUser - ${flattenErr}`)
       return {
         ok: false,
         code: 500,
@@ -141,6 +165,62 @@ async function getGithubUser(
     }
   } catch (error) {
     console.error(`ERROR - github GetUserException - ${error}`)
+    return {
+      ok: false,
+      code: 500,
+      error: "Internal server error. Please restart the process.",
+    }
+  }
+}
+
+const githubUserEmailsSchema = z.array(
+  z.object({
+    email: z.string(),
+    primary: z.boolean(),
+    verified: z.boolean(),
+    visibility: z.string().nullable(),
+  })
+)
+
+async function getGithubUserEmail(
+  token: string
+): Promise<CallbackResponse<string | null>> {
+  try {
+    const req = new Request("https://api.github.com/user/emails")
+    req.headers.set("Authorization", `Bearer ${token}`)
+
+    const resp = await fetch(req)
+    if (!resp.ok) {
+      console.error(`ERROR - github FetchUserEmails - ${resp.status}`)
+      return {
+        ok: false,
+        code: 500,
+        error: "Internal server error. Please restart the process.",
+      }
+    }
+
+    const json = await resp.json()
+
+    const data = githubUserEmailsSchema.safeParse(json)
+    if (!data.success) {
+      const flattenErr = JSON.stringify(data.error.flatten().fieldErrors)
+      console.error(`ERROR - github SafeParseEmails - ${flattenErr}`)
+      return {
+        ok: false,
+        code: 500,
+        error: "Internal server error. Please restart the process.",
+      }
+    }
+
+    for (const email of data.data) {
+      if (email.primary && email.verified) {
+        return { ok: true, data: email.email }
+      }
+    }
+
+    return { ok: true, data: null }
+  } catch (error) {
+    console.error(`ERROR - github GetUserEmailsException - ${error}`)
     return {
       ok: false,
       code: 500,
