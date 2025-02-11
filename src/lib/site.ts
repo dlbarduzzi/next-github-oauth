@@ -7,7 +7,7 @@ type SiteConfig = {
 }
 
 export const siteConfig: SiteConfig = {
-  name: "PlatVids",
+  name: "next-github-oauth",
   description: "A video platform designed to help you develop new skills.",
   url: env.NEXT_PUBLIC_APP_URL,
 }

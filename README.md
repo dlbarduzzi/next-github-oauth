@@ -1,6 +1,6 @@
-# platvids
+# next-github-oauth
 
-A video platform designed to help you develop new skills.
+GitHub oauth based on [https://lucia-auth.com/](lucia-auth).
 
 ## Local development
 
@@ -57,17 +57,17 @@ npm run db:studio
 - Connect to docker database.
 
 ```
-docker exec -it platvids-db-1 psql --host=localhost --dbname=${DB_NAME} --username=${DB_USER}
+docker exec -it appname-db-1 psql --host=localhost --dbname=${DB_NAME} --username=${DB_USER}
 ```
 
 - View current user.
 
 ```sql
-platvids=# SELECT current_user;
+appname=# SELECT current_user;
 ```
 
 - Connect to database name.
 
 ```sql
-platvids=# \c platvids;
+appname=# \c appname;
 ```
