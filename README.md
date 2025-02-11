@@ -1,6 +1,6 @@
 # next-github-oauth
 
-GitHub oauth based on [https://lucia-auth.com/](lucia-auth).
+GitHub oauth based on [lucia-auth](https://lucia-auth.com/) documentation.
 
 ## Local development
 
