@@ -8,6 +8,6 @@ type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   name: "next-github-oauth",
-  description: "A video platform designed to help you develop new skills.",
+  description: "GitHub Oauth sign-in example.",
   url: env.NEXT_PUBLIC_APP_URL,
 }
